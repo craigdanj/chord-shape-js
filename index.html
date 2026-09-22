@@ -2,86 +2,414 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<title>ChordShape — demo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ChordShape — Component Showcase</title>
 <style>
+  :root {
+    --bg: #f5f3ee;
+    --surface: rgba(255, 255, 255, 0.88);
+    --surface-strong: #ffffff;
+    --ink: #20201e;
+    --muted: #77746d;
+    --line: #dedbd3;
+    --accent: #3f5d49;
+    --accent-soft: #dfe8df;
+    --warm: #bd7650;
+    --shadow: 0 18px 50px rgba(55, 50, 43, 0.08);
+    --radius-lg: 28px;
+    --radius-md: 20px;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
   body {
-    font-family: Arial, Helvetica, sans-serif;
-    background: #fafafa;
-    color: #222;
     margin: 0;
-    padding: 40px;
+    color: var(--ink);
+    background:
+      radial-gradient(circle at 10% 0%, rgba(189, 118, 80, 0.12), transparent 28rem),
+      radial-gradient(circle at 100% 20%, rgba(63, 93, 73, 0.11), transparent 32rem),
+      var(--bg);
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    line-height: 1.5;
   }
-  h1 {
-    font-size: 20px;
-    margin: 0 0 4px;
+
+  a { color: inherit; }
+
+  .shell {
+    width: min(1180px, calc(100% - 40px));
+    margin: 0 auto;
   }
-  p.sub {
-    color: #666;
-    margin: 0 0 32px;
+
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 24px 0;
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+
+  .brand-mark {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    background: var(--ink);
+    color: white;
+    font-size: 18px;
+    box-shadow: 0 8px 20px rgba(32, 32, 30, 0.16);
+  }
+
+  .nav {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--muted);
     font-size: 14px;
   }
-  .row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 28px;
-    margin-bottom: 40px;
+
+  .nav a {
+    text-decoration: none;
+    padding: 9px 12px;
+    border-radius: 999px;
   }
-  .card {
-    background: #fff;
-    border: 1px solid #e2e2e2;
-    border-radius: 6px;
-    padding: 12px;
+
+  .nav a:hover { background: rgba(255, 255, 255, 0.65); color: var(--ink); }
+
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(300px, 0.65fr);
+    gap: 40px;
+    align-items: end;
+    padding: 72px 0 60px;
   }
-  .card svg {
-    display: block;
-  }
-  h2 {
-    font-size: 13px;
+
+  .eyebrow,
+  .section-kicker {
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    letter-spacing: 0.04em;
-    color: #888;
-    margin: 0 0 16px;
-    font-weight: 600;
   }
-  code {
-    background: #f0f0f0;
-    padding: 2px 5px;
-    border-radius: 3px;
-    font-size: 12.5px;
+
+  h1 {
+    max-width: 860px;
+    margin: 12px 0 18px;
+    font-size: clamp(48px, 8vw, 96px);
+    line-height: 0.94;
+    letter-spacing: -0.065em;
+    font-weight: 850;
+  }
+
+  .hero-copy {
+    max-width: 720px;
+    margin: 0;
+    color: var(--muted);
+    font-size: clamp(17px, 2vw, 21px);
+  }
+
+  .hero-meta {
+    display: grid;
+    gap: 12px;
+  }
+
+  .meta-card {
+    padding: 18px 20px;
+    border: 1px solid rgba(222, 219, 211, 0.9);
+    background: rgba(255, 255, 255, 0.62);
+    backdrop-filter: blur(12px);
+    border-radius: 18px;
+  }
+
+  .meta-card strong {
+    display: block;
+    margin-bottom: 3px;
+    font-size: 14px;
+  }
+
+  .meta-card span { color: var(--muted); font-size: 13px; }
+
+  .showcase {
+    padding-bottom: 84px;
+  }
+
+  .section {
+    padding: 42px 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .section-head {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 28px;
+    margin-bottom: 24px;
+  }
+
+  .section h2 {
+    margin: 5px 0 0;
+    font-size: clamp(26px, 4vw, 38px);
+    letter-spacing: -0.045em;
+    line-height: 1.05;
+  }
+
+  .section-copy {
+    max-width: 500px;
+    margin: 0;
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 18px;
+  }
+
+  .card {
+    min-height: 350px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+  }
+
+  .card:hover {
+    transform: translateY(-4px);
+    border-color: #cac5ba;
+    box-shadow: 0 22px 60px rgba(55, 50, 43, 0.12);
+  }
+
+  .card-top {
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 20px 20px 0;
+  }
+
+  .card-title {
+    margin: 0;
+    font-size: 20px;
+    letter-spacing: -0.03em;
+  }
+
+  .badge {
+    flex: 0 0 auto;
+    padding: 5px 9px;
+    border-radius: 999px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .diagram {
+    min-height: 235px;
+    display: grid;
+    place-items: center;
+    padding: 18px 28px 22px;
+  }
+
+  .diagram svg {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+
+  .card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 20px;
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  .card-footer code {
+    background: #efede8;
+    color: #55524d;
+    padding: 4px 7px;
+    border-radius: 8px;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    font-size: 11px;
+  }
+
+  .callout {
+    margin-top: 18px;
+    padding: 18px 20px;
+    border-radius: 18px;
+    background: #262723;
+    color: #f4f2ed;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+
+  .callout strong { font-size: 14px; }
+  .callout span { color: #b9bbb4; font-size: 13px; }
+
+  .footer {
+    border-top: 1px solid var(--line);
+    padding: 28px 0 42px;
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  @media (max-width: 820px) {
+    .hero { grid-template-columns: 1fr; padding-top: 42px; }
+    .hero-meta { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .section-head { align-items: start; flex-direction: column; }
+  }
+
+  @media (max-width: 580px) {
+    .shell { width: min(100% - 24px, 1180px); }
+    .nav { display: none; }
+    .hero { padding-bottom: 44px; }
+    .hero-meta { grid-template-columns: 1fr; }
+    .grid { grid-template-columns: 1fr; }
+    .card { min-height: 330px; }
+    .callout, .footer { align-items: flex-start; flex-direction: column; }
   }
 </style>
 </head>
 <body>
+  <header class="shell topbar">
+    <div class="brand">
+      <div class="brand-mark">♯</div>
+      <span>ChordShape</span>
+    </div>
+    <nav class="nav" aria-label="Demo sections">
+      <a href="#open">Open chords</a>
+      <a href="#barre">Barre shapes</a>
+      <a href="#options">Options</a>
+    </nav>
+  </header>
 
-<h1>ChordShape plugin — demo</h1>
-<p class="sub">Reproducing the reference diagrams, plus a couple of extra shapes to check edge cases.</p>
+  <main class="shell">
+    <section class="hero">
+      <div>
+        <div class="eyebrow">SVG guitar chord diagrams</div>
+        <h1>A cleaner way to show chord shapes.</h1>
+        <p class="hero-copy">A polished component showcase for the ChordShape library, with open chords, movable barre shapes, and rendering variations presented in a responsive gallery.</p>
+      </div>
 
-<h2>Reference set 1 — open D</h2>
-<div class="row" id="set1"></div>
+      <aside class="hero-meta" aria-label="Library highlights">
+        <div class="meta-card">
+          <strong>Zero layout assumptions</strong>
+          <span>Drop the rendered SVG into any component or page.</span>
+        </div>
+        <div class="meta-card">
+          <strong>Built for variations</strong>
+          <span>Open strings, muted strings, barres, fret offsets, finger labels.</span>
+        </div>
+      </aside>
+    </section>
 
-<h2>Reference set 2 — Gm7 (barre) &amp; Gmaj7</h2>
-<div class="row" id="set2"></div>
+    <div class="showcase">
+      <section class="section" id="open">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">01 / Open position</div>
+            <h2>Simple shapes, clearly presented.</h2>
+          </div>
+          <p class="section-copy">The original demo’s open D shape is retained, but presented as part of a reusable component gallery rather than as an isolated test case.</p>
+        </div>
+        <div class="grid" id="set1"></div>
+      </section>
 
-<h2>Extra cases — full E-shape barre, and finger numbers rendered inside the dots</h2>
-<div class="row" id="set3"></div>
+      <section class="section" id="barre">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">02 / Movable shapes</div>
+            <h2>Barres and shifted fret positions.</h2>
+          </div>
+          <p class="section-copy">These examples exercise full-width barres and chord diagrams that begin higher up the neck.</p>
+        </div>
+        <div class="grid" id="set2"></div>
+      </section>
+
+      <section class="section" id="options">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">03 / Rendering options</div>
+            <h2>Edge cases, without the “test page” look.</h2>
+          </div>
+          <p class="section-copy">The F major barre chord and the alternate D rendering keep the same API coverage while making the page feel like documentation for a real library.</p>
+        </div>
+        <div class="grid" id="set3"></div>
+
+        <div class="callout">
+          <div>
+            <strong>All diagrams are still rendered by <code>ChordShape</code>.</strong><br />
+            <span>The redesign only changes the surrounding demo UI and presentation.</span>
+          </div>
+          <span>Responsive · SVG · Vanilla JS</span>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="shell footer">
+    <span>ChordShape component showcase</span>
+    <span>Demo page · Vanilla HTML/CSS/JS</span>
+  </footer>
 
 <script src="chord-shape.js"></script>
 <script>
-  function mount(containerId, diagram) {
+  function mount(containerId, diagram, meta) {
     document.getElementById(containerId).appendChild(
-      wrapCard(diagram.render())
+      wrapCard(diagram.render(), meta)
     );
   }
 
-  function wrapCard(svgEl) {
-    const card = document.createElement('div');
+  function wrapCard(svgEl, { title, badge, detail, api }) {
+    const card = document.createElement('article');
     card.className = 'card';
-    card.appendChild(svgEl);
+
+    const top = document.createElement('div');
+    top.className = 'card-top';
+    top.innerHTML = `
+      <div><h3 class="card-title">${title}</h3></div>
+      <span class="badge">${badge}</span>
+    `;
+
+    const diagram = document.createElement('div');
+    diagram.className = 'diagram';
+    diagram.appendChild(svgEl);
+
+    const footer = document.createElement('div');
+    footer.className = 'card-footer';
+    footer.innerHTML = `<span>${detail}</span><code>${api}</code>`;
+
+    card.append(top, diagram, footer);
     return card;
   }
 
-  // --- Set 1: D chord, open position ---
-  // Strings low E -> high E. D is only played on the top 4 strings.
   const dChord = new ChordShape({
     name: 'D',
     strings: 6,
@@ -90,23 +418,30 @@
     frets:   [-1, -1, 0, 2, 3, 2],
     fingers: [null, null, null, 1, 3, 2],
   });
-  mount('set1', dChord);
+  mount('set1', dChord, {
+    title: 'D major',
+    badge: 'Open chord',
+    detail: 'Open position · 4 played strings',
+    api: "name: 'D'",
+  });
 
-  // --- Set 2: Gm7 (barre at fret 3) and Gmaj7 (starts at fret 2) ---
   const gm7 = new ChordShape({
     name: 'Gm7',
     strings: 6,
     fretCount: 4,
     startFret: 3,
-    // All 6 strings fretted at fret 3 (the barre), plus one extra note at fret 5
-    // on the 5th string (index 1 from the low side), matching the reference image.
     frets:   [3, 5, 3, 3, 3, 3],
     fingers: [null, 3, null, null, null, null],
     barres: [
       { fret: 3, fromString: 0, toString: 5, finger: 1 },
     ],
   });
-  mount('set2', gm7);
+  mount('set2', gm7, {
+    title: 'G minor 7',
+    badge: 'Barre',
+    detail: 'Full barre · starts at fret 3',
+    api: 'barres[]',
+  });
 
   const gmaj7 = new ChordShape({
     name: 'Gmaj7',
@@ -116,12 +451,13 @@
     frets:   [-1, -1, 4, 4, 3, 2],
     fingers: [null, null, 3, 4, 2, 1],
   });
-  mount('set2', gmaj7);
+  mount('set2', gmaj7, {
+    title: 'G major 7',
+    badge: 'Offset',
+    detail: 'Movable voicing · starts at fret 2',
+    api: 'startFret: 2',
+  });
 
-  // --- Set 3: extra cases ---
-
-  // A full E-shape barre chord (F major) to confirm barres spanning all 6
-  // strings, combined with additional fretted notes off the barre, still work.
   const fMajor = new ChordShape({
     name: 'F',
     strings: 6,
@@ -133,9 +469,13 @@
       { fret: 1, fromString: 0, toString: 5, finger: 1 },
     ],
   });
-  mount('set3', fMajor);
+  mount('set3', fMajor, {
+    title: 'F major',
+    badge: 'Full barre',
+    detail: 'E-shape barre · all 6 strings',
+    api: 'fromString → toString',
+  });
 
-  // Same D chord, but with fingerPosition: 'inside' to demonstrate the option.
   const dChordInside = new ChordShape({
     name: 'D',
     strings: 6,
@@ -145,8 +485,12 @@
     fingers: [null, null, null, 1, 3, 2],
     fingerPosition: 'inside',
   });
-  mount('set3', dChordInside);
+  mount('set3', dChordInside, {
+    title: 'D major · labels inside',
+    badge: 'Option',
+    detail: 'Finger numbers rendered in dots',
+    api: "fingerPosition: 'inside'",
+  });
 </script>
-
 </body>
 </html>
